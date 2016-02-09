@@ -152,9 +152,6 @@ namespace JokerFioraBuddy
             }
             if (unit.ChampionName.Equals("Zyra"))
             {
-                if (args.SData.Name == "ZyraGraspingRoots")
-                    Core.DelayAction(() => SpellManager.W.Cast(Game.CursorPos), 15000);
-                else
                     Core.DelayAction(() => CastW(castUnit),
                         (int)(args.Start.Distance(Player.Instance) / args.SData.MissileSpeed * 1000) -
                         (int)(args.End.Distance(Player.Instance) / args.SData.MissileSpeed) - 500);
@@ -196,15 +193,14 @@ namespace JokerFioraBuddy
             //}
 
 
-            if (args.Target != null)
+            if (args.Target != null && type.Equals(SpellDataTargetType.Unit))
             {
-            //    if (!args.Target.IsMe ||
-            //        (args.Target.Name.Equals("Barrel") && args.Target.Distance(Player.Instance) > 200 &&
-            //         args.Target.Distance(Player.Instance) < 400))
-            //    {
-            //        Console.WriteLine("barrel");
-            //        return;
-            //    }
+                if (!args.Target.IsMe ||
+                    (args.Target.Name.Equals("Barrel") && args.Target.Distance(Player.Instance) > 200 &&
+                     args.Target.Distance(Player.Instance) < 400))
+                {
+                    return;
+                }
 
                 if (unit.ChampionName.Equals("Nautilus") ||
                     (unit.ChampionName.Equals("Caitlyn") && args.Slot.Equals(SpellSlot.R)))
@@ -227,7 +223,6 @@ namespace JokerFioraBuddy
                 }
                 else if (unit.ChampionName.Equals("Riven") && args.End.Distance(Player.Instance) < 260)
                 {
-                    Console.WriteLine("RIVEN");
                     CastW(castUnit);
                 }
                 else

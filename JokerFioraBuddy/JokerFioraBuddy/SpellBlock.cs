@@ -338,7 +338,6 @@ namespace JokerFioraBuddy
 
             foreach (var skillshot in Evade.Evade.GetSkillshotsAboutToHit(Player.Instance, (int)(SpellManager.W.CastDelay + Game.Ping / 2f)))
             {
-                Console.WriteLine("Initialized Skillshot: " + skillshot.ToString());
                 if (!SpellManager.W.IsReady())
                     return;
 
@@ -349,11 +348,8 @@ namespace JokerFioraBuddy
 
                 var spells = new List<BlockedSpell>();
 
-                Console.WriteLine("Before value spell count: " + spells.Count);
-
                 BlockedSpells.TryGetValue(enemy.ChampionName, out spells);
 
-                Console.WriteLine("Before after spell count: " + spells.Count);
 
                 if (spells == null || spells.Count == 0)
                     continue;
@@ -364,20 +360,14 @@ namespace JokerFioraBuddy
 
                     if (item == null || !item.Cast<CheckBox>().CurrentValue)
                         continue;
-                    Console.WriteLine("Item: " + item.DisplayName + "; Passed Check Condition");
+                   
                     if (!spell.PassesSlotCondition(skillshot.SpellData.Slot))
                         continue;
-                    Console.WriteLine("Item: " + item.DisplayName + "; Passed Slot Condition");
-
+                   
                     if (!spell.PassesBuffCondition(enemy) || !spell.PassesModelCondition(enemy))
                         continue;
-                    Console.WriteLine("Item: " + item.DisplayName + "; Passed Buff and Model Condition");
                     if (!spell.PassesSpellCondition(skillshot.SpellData.SpellName))
                         continue;
-
-                    Console.WriteLine("Item: " + item.DisplayName + "; Passed Spell Condition");
-
-
 
                     if (Config.ShieldBlock.EvadeIntegration)
                     Program.CastW(skillshot.Unit);
