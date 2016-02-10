@@ -40,12 +40,12 @@ namespace JokerFioraBuddy
 
             Text = new Text("", new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold)) {Color = Color.Red};
 
+            UpdateChecker.CheckForUpdates();
+
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             Obj_AI_Base.OnLevelUp += Obj_AI_Base_OnLevelUp;
             Drawing.OnDraw += Drawing_OnDraw;
 
-            Chat.Print(
-                "<font color = \"#6B9FE3\">Joker Fiora 2.00</font><font color = \"#E3AF6B\"> by JokerArt</font>. Report any bugs please! Thanks and enjoy.");
             Player.LevelSpell(SpellSlot.Q);
             Player.SetSkinId(Config.Misc.SkinID);
         }

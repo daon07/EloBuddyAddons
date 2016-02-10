@@ -122,6 +122,7 @@
     <Compile Include="SpellBlock.cs" />
     <Compile Include="SpellManager.cs" />
     <Compile Include="TargetSelector2.cs" />
+    <Compile Include="UpdateChecker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
