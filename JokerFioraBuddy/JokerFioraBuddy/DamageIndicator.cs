@@ -28,8 +28,8 @@ namespace JokerFioraBuddy
 
         static DamageIndicator()
         {
-            TextKillable = new Text("", new Font(FontFamily.GenericSerif, 11, FontStyle.Bold)) { Color = System.Drawing.Color.Red };
-            TextMinion = new Text("", new Font(FontFamily.GenericSerif, 11, FontStyle.Bold)) { Color = System.Drawing.Color.LimeGreen };
+            TextKillable = new Text("", new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold)) { Color = System.Drawing.Color.Red };
+            TextMinion = new Text("", new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold)) { Color = System.Drawing.Color.LimeGreen };
 
             Drawing.OnDraw += Drawing_OnDraw;
         }
@@ -63,7 +63,7 @@ namespace JokerFioraBuddy
 
                     TextKillable.Draw();
                 }
-            }            
+            }
         }
 
         public static void Initialize()

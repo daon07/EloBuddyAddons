@@ -11,13 +11,14 @@ using Color = System.Drawing.Color;
 using PermaSettings = JokerFioraBuddy.Config.Modes.Perma;
 using ComboSettings = JokerFioraBuddy.Config.Modes.Combo;
 using ShieldSettings = JokerFioraBuddy.Config.ShieldBlock;
+using JokerFioraBuddy.Misc;
+using System.Threading;
 
 namespace JokerFioraBuddy
 {
     public static class Program
     {
         public const string ChampName = "Fiora";
-        private static Text Text { get; set; }
 
         private static void Main(string[] args)
         {
@@ -29,6 +30,7 @@ namespace JokerFioraBuddy
             if (Player.Instance.ChampionName != ChampName)
                 return;
 
+            
             Config.Initialize();
             TargetSelector2.Initialize();
             ModeManager.Initialize();
@@ -38,9 +40,12 @@ namespace JokerFioraBuddy
             SpellBlock.Initialize();
             Dispeller.Initialize();
 
-            Text = new Text("", new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold)) {Color = Color.Red};
-
             UpdateChecker.CheckForUpdates();
+
+            while (UpdateChecker.gitVersion == System.Version.Parse("0.0.0.0"))
+            { }
+
+            ShowNotification(Config.Drawings.ShowNotification);
 
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             Obj_AI_Base.OnLevelUp += Obj_AI_Base_OnLevelUp;
@@ -48,6 +53,25 @@ namespace JokerFioraBuddy
 
             Player.LevelSpell(SpellSlot.Q);
             Player.SetSkinId(Config.Misc.SkinID);
+        }
+
+        private static void ShowNotification(bool showNotification)
+        {
+
+            if (showNotification)
+            {
+                if (UpdateChecker.gitVersion != typeof(Program).Assembly.GetName().Version)
+                    Notification.DrawNotification(new NotificationModel(Game.Time, 7f, 2f, "OUTDATED - Please update to version: " + UpdateChecker.gitVersion, Color.Red));
+                else
+                    Notification.DrawNotification(new NotificationModel(Game.Time, 7f, 2f, "UPDATED - Version: " + UpdateChecker.gitVersion, Color.White));
+            }
+            else
+            {
+                if (UpdateChecker.gitVersion != typeof(Program).Assembly.GetName().Version)
+                    Chat.Print("<font color='#15C3AC'>Joker Fiora - The Grand Duelist:</font> <font color='#FF0000'>" + "OUTDATED - Please update to version: " + UpdateChecker.gitVersion + "</font>");
+                else
+                    Chat.Print("<font color='#15C3AC'>Joker Fiora - The Grand Duelist:</font> <font color='#00FF00'>" + "UPDATED - Version: " + UpdateChecker.gitVersion + "</font>");
+            }
         }
 
         private static void Drawing_OnDraw(EventArgs args)

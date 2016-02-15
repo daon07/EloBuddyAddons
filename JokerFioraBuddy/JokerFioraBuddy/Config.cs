@@ -11,7 +11,7 @@ namespace JokerFioraBuddy
 {
     public static class Config
     {
-        private const string MenuName = "Joker Fiora 2.00";
+        private const string MenuName = "Joker Fiora 2.0.0.2";
 
         private static readonly Menu Menu;
 
@@ -50,20 +50,26 @@ namespace JokerFioraBuddy
             public static readonly Menu Menu;
             public static bool ShowKillable
             {
-                get { return Menu["damageKillable"].Cast<CheckBox>().CurrentValue; }
+                get { return Menu["drawingKillable"].Cast<CheckBox>().CurrentValue; }
             }
 
             public static bool ShowChampionTarget
             {
-                get { return Menu["damageChampionTarget"].Cast<CheckBox>().CurrentValue; }
+                get { return Menu["drawingChampionTarget"].Cast<CheckBox>().CurrentValue; }
+            }
+
+            public static bool ShowNotification
+            {
+                get { return Menu["drawingNotification"].Cast<CheckBox>().CurrentValue; }
             }
 
             static Drawings()
             {
                 Menu = Config.Menu.AddSubMenu("Drawings");
                 Menu.AddGroupLabel("Drawings");
-                Menu.Add("damageKillable", new CheckBox("Show text if champion is killable"));
-                Menu.Add("damageChampionTarget", new CheckBox("Show circle below targeted champion"));             
+                Menu.Add("drawingKillable", new CheckBox("Show text if champion is killable"));
+                Menu.Add("drawingChampionTarget", new CheckBox("Show circle below targeted champion"));
+                Menu.Add("drawingNotification", new CheckBox("Show notification at the start of the game"));      
             }
 
             public static void Initialize()

@@ -68,11 +68,13 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EloBuddy">
-      <HintPath>C:\Users\User.MUFFIN\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.dll</HintPath>
+    <Reference Include="EloBuddy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7339047cb10f6e86, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.dll</HintPath>
     </Reference>
-    <Reference Include="EloBuddy.SDK">
-      <HintPath>C:\Users\User.MUFFIN\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.SDK.dll</HintPath>
+    <Reference Include="EloBuddy.SDK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6b574a82b1ea937e, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.SDK.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
       <HintPath>C:\Users\User.MUFFIN\AppData\Roaming\EloBuddy\Addons\Libraries\SharpDX.dll</HintPath>
@@ -108,6 +110,8 @@
     <Compile Include="Evade\SpellDatabase.cs" />
     <Compile Include="Evade\Utils.cs" />
     <Compile Include="ItemManager.cs" />
+    <Compile Include="Misc\Notification.cs" />
+    <Compile Include="Misc\NotificationModel.cs" />
     <Compile Include="ModeManager.cs" />
     <Compile Include="Modes\Combo.cs" />
     <Compile Include="Modes\Flee.cs" />
@@ -119,6 +123,11 @@
     <Compile Include="PassiveManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SpellBlock.cs" />
     <Compile Include="SpellManager.cs" />
     <Compile Include="TargetSelector2.cs" />
@@ -143,6 +152,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\notification.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

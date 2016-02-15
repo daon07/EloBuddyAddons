@@ -32,7 +32,7 @@ namespace JokerFioraBuddy
             R.CastDelay = (int).066f;
 
             if (ObjectManager.Player.GetSpellSlotFromName("summonerdot") != SpellSlot.Unknown)
-                IG = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 550);
+                IG = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
 
         }
 

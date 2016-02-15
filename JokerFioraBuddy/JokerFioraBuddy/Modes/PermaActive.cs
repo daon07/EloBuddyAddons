@@ -23,7 +23,8 @@ namespace JokerFioraBuddy.Modes
         
         public override void Execute()
         {
-            DamageIndicator.DamageToUnit = GetComboDamage;
+            if(Config.Drawings.ShowKillable)
+                DamageIndicator.DamageToUnit = GetComboDamage;
 
             if (Player.Instance.GetSpellSlotFromName("summonerdot") == SpellSlot.Summoner1 ||
                 Player.Instance.GetSpellSlotFromName("summonerdot") == SpellSlot.Summoner2)
@@ -80,8 +81,11 @@ namespace JokerFioraBuddy.Modes
             if (ItemManager.Cutl.IsReady() && ItemManager.Cutl.IsOwned())
                 d += Player.Instance.GetItemDamage(unit, ItemId.Bilgewater_Cutlass);
 
-            if (ItemManager.Hydra.IsReady() && ItemManager.Hydra.IsOwned())
+            if (ItemManager.RavenousHydra.IsReady() && ItemManager.RavenousHydra.IsOwned())
                 d += Player.Instance.GetItemDamage(unit, ItemId.Ravenous_Hydra_Melee_Only);
+
+            if (ItemManager.TitanicHydra.IsReady() && ItemManager.TitanicHydra.IsOwned())
+                d += Player.Instance.GetItemDamage(unit, ItemId.Titanic_Hydra);
 
             if (ItemManager.Tiamat.IsReady() && ItemManager.Tiamat.IsOwned())
                 d += Player.Instance.GetItemDamage(unit, ItemId.Ravenous_Hydra_Melee_Only);

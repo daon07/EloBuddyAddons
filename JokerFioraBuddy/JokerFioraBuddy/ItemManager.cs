@@ -13,7 +13,8 @@ namespace JokerFioraBuddy
     public static class ItemManager
     {
 
-        public static Item Hydra { get; private set; }
+        public static Item RavenousHydra { get; private set; }
+        public static Item TitanicHydra { get; private set; }
         public static Item BOTRK { get; private set; }
         public static Item Cutl { get; private set; }
         public static Item Tiamat { get; private set; }
@@ -23,7 +24,8 @@ namespace JokerFioraBuddy
 
         static ItemManager()
         {
-            Hydra = new Item((int)ItemId.Ravenous_Hydra_Melee_Only, 400);
+            RavenousHydra = new Item((int)ItemId.Ravenous_Hydra_Melee_Only, 400);
+            TitanicHydra = new Item((int)ItemId.Titanic_Hydra);
             BOTRK = new Item((int)ItemId.Blade_of_the_Ruined_King, 450);
             Cutl = new Item((int)ItemId.Bilgewater_Cutlass, 450);
             Tiamat = new Item((int)ItemId.Tiamat_Melee_Only, 400);
@@ -34,24 +36,28 @@ namespace JokerFioraBuddy
 
         public static void useHydra(Obj_AI_Base target)
         {
-            if (Tiamat.IsOwned() || Hydra.IsOwned())
+            if (Tiamat.IsOwned() || RavenousHydra.IsOwned() || TitanicHydra.IsOwned())
             {
-                if ((Tiamat.IsReady() || Hydra.IsReady()) && Player.Instance.Distance(target) <= Hydra.Range)
+                if ((Tiamat.IsReady() && Player.Instance.Distance(target) <= RavenousHydra.Range 
+                    || RavenousHydra.IsReady()) && Player.Instance.Distance(target) <= RavenousHydra.Range 
+                    || TitanicHydra.IsReady())
                 {
                     Tiamat.Cast();
-                    Hydra.Cast();
+                    TitanicHydra.Cast();
+                    RavenousHydra.Cast();
                 }
             }
         }
 
         public static void useHydraNot(Obj_AI_Base target)
         {
-            if (Tiamat.IsOwned() || Hydra.IsOwned())
+            if (Tiamat.IsOwned() || RavenousHydra.IsOwned() || TitanicHydra.IsOwned())
             {
-                if (Tiamat.IsReady() || Hydra.IsReady())
+                if (Tiamat.IsReady() || RavenousHydra.IsReady() || TitanicHydra.IsReady())
                 {
                     Tiamat.Cast();
-                    Hydra.Cast();
+                    TitanicHydra.IsReady();
+                    RavenousHydra.Cast();
                 }
             }
         }
