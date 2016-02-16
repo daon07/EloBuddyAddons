@@ -55,7 +55,14 @@ namespace JokerFizzBuddy
             var spell = args.SData;
 
             if (spell.Name == "FizzJump")
+            {
                 Orbwalker.DisableMovement = true;
+
+                Core.DelayAction(() =>
+                    {
+                        Orbwalker.DisableMovement = false;
+                    }, 1520 - Game.Ping);
+            }
 
             if (spell.Name == "fizzjumptwo")
                 Orbwalker.DisableMovement = false;
