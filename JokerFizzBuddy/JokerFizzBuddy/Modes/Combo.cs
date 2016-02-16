@@ -133,8 +133,7 @@ namespace JokerFizzBuddy.Modes
                 E.Cast(castPos);
 
                 var pred2 = Prediction.Position.PredictUnitPosition(target, 1).Distance(Player.Instance.Position) <= (200 + 330 + target.BoundingRadius);
-
-                Console.WriteLine("pred2: " + pred2);
+				
                 if (pred2)
                     Player.IssueOrder(GameObjectOrder.MoveTo, Prediction.Position.PredictUnitPosition(target, 1).To3DWorld());
                 else
