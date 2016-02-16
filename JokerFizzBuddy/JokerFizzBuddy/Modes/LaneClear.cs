@@ -42,27 +42,28 @@ namespace JokerFizzBuddy.Modes
 
             if (Settings.UseE && E.IsReady())
             {
-                var minion = EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(m => m.IsValidTarget(E.Range));
-                if (minion == null) return;
+                var minions = EntityManager.MinionsAndMonsters.GetLaneMinions()
+                    .Where(
+                    m => m.IsValidTarget(E.Range)).ToArray();
+                if (minions.Length == 0) return;
 
-                if (E.IsInRange(minion) && E.Name == "FizzJump")
+                if (E.Name == "FizzJump")
                 {
-                    var castPos = Player.Instance.Distance(Prediction.Position.PredictUnitPosition(minion, 1)) > E.Range ?
-    Player.Instance.Position.Extend(Prediction.Position.PredictUnitPosition(minion, 1), E.Range).To3DWorld() : minion.Position;
+                    var castPos = Prediction.Position.PredictCircularMissileAoe(minions, E.Range, E.Width,
+                        E.CastDelay, E.Speed).OrderByDescending(r => r.GetCollisionObjects<Obj_AI_Minion>().Length).FirstOrDefault();
 
-                    //var castPos = E.GetPrediction(target).CastPosition;
-                    E.Cast(castPos);
-
-                    var pred2 = Prediction.Position.PredictUnitPosition(minion, 1).Distance(Player.Instance.Position) <= (200 + 330 + minion.BoundingRadius);
-
-                    if (pred2)
+                    if (castPos != null)
                     {
-                        Player.IssueOrder(GameObjectOrder.MoveTo, Prediction.Position.PredictUnitPosition(minion, 1).To3DWorld());
-                        Orbwalker.DisableMovement = false;
+                        var predictMinion = castPos.GetCollisionObjects<Obj_AI_Minion>();
+
+                        if (predictMinion.Length >= 2)
+                        {
+                            //var castPos = E.GetPrediction(target).CastPosition;
+                            E.Cast(castPos.CastPosition);
+
+                            Player.IssueOrder(GameObjectOrder.MoveTo, castPos.CastPosition);
+                        }
                     }
-                    else
-                        E.Cast(Prediction.Position.PredictUnitPosition(minion, 1).To3DWorld());
-                    //E.Cast(minion);
                 }
             }
         }
