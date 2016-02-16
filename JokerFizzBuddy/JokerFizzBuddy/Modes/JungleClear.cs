@@ -36,7 +36,22 @@ namespace JokerFizzBuddy.Modes
 
             if (Settings.UseE && E.IsReady() && mob.IsValidTarget(E.Range))
             {
-                E.Cast(mob);
+                if (E.IsInRange(mob) && E.Name == "FizzJump")
+                {
+                    var castPos = Player.Instance.Distance(Prediction.Position.PredictUnitPosition(mob, 1)) > E.Range ?
+    Player.Instance.Position.Extend(Prediction.Position.PredictUnitPosition(mob, 1), E.Range).To3DWorld() : mob.Position;
+
+                    //var castPos = E.GetPrediction(target).CastPosition;
+                    E.Cast(castPos);
+
+                    var pred2 = Prediction.Position.PredictUnitPosition(mob, 1).Distance(Player.Instance.Position) <= (200 + 330 + mob.BoundingRadius);
+
+                    if (pred2)
+                        Player.IssueOrder(GameObjectOrder.MoveTo, Prediction.Position.PredictUnitPosition(mob, 1).To3DWorld());
+                    else
+                        E.Cast(Prediction.Position.PredictUnitPosition(mob, 1).To3DWorld());
+                    //E.Cast(minion);
+                }
             }
         }
     }
