@@ -56,10 +56,7 @@ namespace JokerFizzBuddy.Modes
                     var pred2 = Prediction.Position.PredictUnitPosition(minion, 1).Distance(Player.Instance.Position) <= (200 + 330 + minion.BoundingRadius);
 
                     if (pred2)
-                    {
                         Player.IssueOrder(GameObjectOrder.MoveTo, Prediction.Position.PredictUnitPosition(minion, 1).To3DWorld());
-                        Orbwalker.DisableMovement = false;
-                    }
                     else
                         E.Cast(Prediction.Position.PredictUnitPosition(minion, 1).To3DWorld());
                     //E.Cast(minion);
