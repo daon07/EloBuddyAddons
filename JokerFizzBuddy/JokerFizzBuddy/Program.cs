@@ -46,19 +46,7 @@ namespace JokerFizzBuddy
             Player.SetSkinId(Config.Misc.SkinID);
             Drawing.OnDraw += OnDraw;
             Game.OnUpdate += OnUpdate;
-            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
 
-        }
-
-        static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            var spell = args.SData;
-
-            if (spell.Name == "FizzJump")
-                Orbwalker.DisableMovement = true;
-
-            if (spell.Name == "fizzjumptwo")
-                Orbwalker.DisableMovement = false;
         }
 
         static void OnDraw(EventArgs args)

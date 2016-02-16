@@ -120,24 +120,17 @@ namespace JokerFizzBuddy.Modes
             if (UseW && Player.Instance.Distance(target.Position) <= 540) W.Cast();
             if (UseQ && Player.Instance.Distance(target.Position) <= Q.Range) Q.Cast(target);
 
-
-            var prediction = Prediction.Position.PredictUnitPosition(target, 1).Distance(Player.Instance.Position) <= (E.Range + 200 + 330);
-
-            if (E.Name == "FizzJump" && UseE && !W.IsReady() && !Q.IsReady() && !R.IsReady() && prediction)
+            if (E.Name == "FizzJump" && UseE && (Player.Instance.Distance(target.Position) > 300)
+                && (Player.Instance.Distance(target.Position) <= E.Range + 270) && !W.IsReady() && !Q.IsReady() && !R.IsReady())
             {
-
-                var castPos = Player.Instance.Distance(Prediction.Position.PredictUnitPosition(target, 1)) > E.Range ?
-                    Player.Instance.Position.Extend(Prediction.Position.PredictUnitPosition(target, 1), E.Range).To3DWorld() : target.Position;
-
-                //var castPos = E.GetPrediction(target).CastPosition;
+                var castPos = E.GetPrediction(target).CastPosition;
                 E.Cast(castPos);
-
-                var pred2 = Prediction.Position.PredictUnitPosition(target, 1).Distance(Player.Instance.Position) <= (200 + 330 + target.BoundingRadius);
-
-                if (pred2)
-                    Player.IssueOrder(GameObjectOrder.MoveTo, Prediction.Position.PredictUnitPosition(target, 1).To3DWorld());
-                else
-                    E.Cast(Prediction.Position.PredictUnitPosition(target, 1).To3DWorld());
+                Core.DelayAction(() =>
+                    {
+                        if (!W.IsReady() && !Q.IsReady() && Player.Instance.Distance(target.Position) > 330
+                            && Player.Instance.Distance(target.Position) <= 400 + 270)
+                            E.Cast(E.GetPrediction(target).CastPosition);
+                    }, (680 - Game.Ping));
 
                 if (UseZhonya && Settings.ComboSettings != "Real On Dash" && Program.CanCastZhonyaOnDash)
                 {
