@@ -41,3 +41,14 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.dll
+*.exe
+JokerFizzBuddy/JokerFizzBuddy/bin/Release/JokerFizzBuddy.pdb
+*.cs
+JokerFizzBuddy/JokerFizzBuddy/bin/Release/JokerFizzBuddy.exe.config
+*.manifest
+*.txt
+JokerFizzBuddy/JokerFizzBuddy/obj/Release/JokerFizzBuddy.csproj.GenerateResource.Cache
+*.cache
+JokerFizzBuddy/JokerFizzBuddy/obj/Release/JokerFizzBuddy.pdb
+*.config

@@ -22,7 +22,6 @@ namespace JokerFizzBuddy
 
         public static DamageToUnitDelegate DamageToUnit { get; set; }
         public static Text TextKillable { get; private set; }
-        public static Text TextMinion { get; private set; }
 
         static DamageIndicator()
         {
