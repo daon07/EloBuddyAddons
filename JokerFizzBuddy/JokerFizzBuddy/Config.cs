@@ -11,7 +11,7 @@ namespace JokerFizzBuddy
 {
     public static class Config
     {
-        private const string MenuName = "Joker Fizz 1.0.0.0";
+        private const string MenuName = "Joker Fizz 1.0.0.2";
 
         private static readonly Menu Menu;
 
@@ -105,6 +105,21 @@ namespace JokerFizzBuddy
         {
             private static readonly Menu Menu;
 
+            public static bool UseAutoEOnTurrets
+            {
+                get { return Menu["AutoETurrets"].Cast<CheckBox>().CurrentValue; } 
+            }
+
+            public static bool UseAutoEOnTurretsCursor
+            {
+                get { return Menu["AutoETurretsCursor"].Cast<CheckBox>().CurrentValue; }
+            }
+
+            public static bool UseAutoEOnTurretsMinions
+            {
+                get { return Menu["AutoETurretsMinions"].Cast<CheckBox>().CurrentValue; }
+            }
+
             public static int SkinID
             {
                 get { return Menu["skinid"].Cast<Slider>().CurrentValue; }
@@ -115,13 +130,17 @@ namespace JokerFizzBuddy
                 get { return Menu["skinhack"].Cast<CheckBox>().CurrentValue; }
             }
 
-            public static Slider SkinSlider = new Slider("SkinID : ({0})", 0, 0, 5);
+            public static Slider SkinSlider = new Slider("SkinID : ({0})", 0, 0, 8);
             public static CheckBox SkinEnable = new CheckBox("Enable");
             public static CheckBox EvolveEnable = new CheckBox("Enable");
 
             static Misc()
             {
                 Menu = Config.Menu.AddSubMenu("Misc");
+                Menu.AddGroupLabel("Auto Evade");
+                Menu.Add("AutoETurrets", new CheckBox("Auto E if turret targets you"));
+                Menu.Add("AutoETurretsCursor", new CheckBox("Auto E position to cursor"));
+                Menu.Add("AutoETurretsMinions", new CheckBox("Auto E position to minions position"));
                 Menu.AddGroupLabel("Skin Hack");
                 Menu.Add("skinhack", SkinEnable);
                 Menu.Add("skinid", SkinSlider);
@@ -133,7 +152,7 @@ namespace JokerFizzBuddy
             {
                 if (!Misc.enableSkinHack)
                 {
-                    Player.SetSkinId(0);
+                    Player.SetSkinId(Program.SkinID);
                     return;
                 }
 
@@ -144,7 +163,7 @@ namespace JokerFizzBuddy
             {
                 if (!Misc.enableSkinHack)
                 {
-                    Player.SetSkinId(0);
+                    Player.SetSkinId(Program.SkinID);
                     return;
                 }
 
@@ -209,6 +228,12 @@ namespace JokerFizzBuddy
                     get { return Menu["comboUseR"].Cast<CheckBox>().CurrentValue; }
                 }
 
+                public static string RMode
+                {
+                    get { return Menu["comboRMode"].Cast<ComboBox>().SelectedText; }
+                }
+
+
                 public static bool UseTiamatHydra
                 {
                     get { return Menu["comboUseTiamatHydra"].Cast<CheckBox>().CurrentValue; }
@@ -259,7 +284,6 @@ namespace JokerFizzBuddy
                     get { return Menu["comboUseEFlashZhonyasItem"].Cast<CheckBox>().CurrentValue; }
                 }
 
-
                 static Combo()
                 {
                     Menu.AddGroupLabel("Combo");
@@ -267,6 +291,7 @@ namespace JokerFizzBuddy
                     Menu.Add("comboUseW", new CheckBox("Use W"));
                     Menu.Add("comboUseE", new CheckBox("Use E"));
                     Menu.Add("comboUseR", new CheckBox("Use R"));
+                    Menu.Add("comboRMode", new ComboBox("R Mode:", 0, new string[] { "Always", "Only if killable" }));
                     Menu.Add("comboUseTiamatHydra", new CheckBox("Use Tiamat / Hydra"));
                     Menu.Add("comboUseCutlassBOTRK", new CheckBox("Use Bilgewater Cutlass / Blade of the Ruined King"));
                     Menu.Add("comboUseHexTech", new CheckBox("Use Hextech Gunblade"));
@@ -278,7 +303,7 @@ namespace JokerFizzBuddy
                     Menu.Add("comboUseQminionREW", new KeyBind("Q minion/champ/monster to gapclose R E W", false, KeyBind.BindTypes.HoldActive, "H".ToCharArray()[0]));
                     Menu.Add("comboUseEFlashZhonyas", new KeyBind("E Flash on target R W Q and Zhonyas", false, KeyBind.BindTypes.HoldActive, "J".ToCharArray()[0]));
                     Menu.Add("comboUseEFlashZhonyasItem", new CheckBox("Use Zhonyas in E Flash Combo (E -> Flash -> R -> W -> Q -> Zhonyas)"));
-                   
+                
                 }
 
                 public static void Initialize()
@@ -289,6 +314,10 @@ namespace JokerFizzBuddy
 
             public static class Harass
             {
+                public static string HarassMode
+                {
+                    get { return Menu["harassMode"].Cast<ComboBox>().SelectedText; }
+                }
                 public static bool UseQ
                 {
                     get { return Menu["harassUseQ"].Cast<CheckBox>().CurrentValue; }
@@ -312,6 +341,7 @@ namespace JokerFizzBuddy
                 static Harass()
                 {
                     Menu.AddGroupLabel("Harrass");
+                    Menu.Add("harassMode", new ComboBox("Harass Mode:", 0, new string[] { "Agressive Mode", "Safe Mode" }));
                     Menu.Add("harassUseQ", new CheckBox("Use Q"));
                     Menu.Add("harassUseW", new CheckBox("Use W"));
                     Menu.Add("harassUseE", new CheckBox("Use E"));
@@ -341,6 +371,11 @@ namespace JokerFizzBuddy
                     get { return Menu["lcUseE"].Cast<CheckBox>().CurrentValue; }
                 }
 
+                public static int UseEMinion
+                {
+                    get { return Menu["lcUseEMinion"].Cast<Slider>().CurrentValue; }
+                }
+
                 public static bool UseTiamatHydra
                 {
                     get { return Menu["lcUseTiamatHydra"].Cast<CheckBox>().CurrentValue; }
@@ -357,6 +392,7 @@ namespace JokerFizzBuddy
                     Menu.Add("lcUseQ", new CheckBox("Use Q"));
                     Menu.Add("lcUseW", new CheckBox("Use W"));
                     Menu.Add("lcUseE", new CheckBox("Use E"));
+                    Menu.Add("lcUseEMinion", new Slider("Use E at atleast {0} minions", 3, 1, 6));
                     Menu.Add("lcUseTiamatHydra", new CheckBox("Use Tiamat / Hydra"));
                     Menu.Add("lcMana", new Slider("Maximum mana usage in percent ({0}%)", 40));
                 }
@@ -433,11 +469,13 @@ namespace JokerFizzBuddy
                     Menu.Add("permaUseIG", new CheckBox("Auto-Ignite Champions"));
                     Menu.Add("igniteMode", igniteModeSlider);
 
+                    igniteModeSlider.OnValueChange += IgniteModeSlider_OnValueChange;
+
                 }
 
                 public static void Initialize()
                 {
-                    igniteModeSlider.OnValueChange += IgniteModeSlider_OnValueChange;
+
                 }
 
                 private static void IgniteModeSlider_OnValueChange(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)

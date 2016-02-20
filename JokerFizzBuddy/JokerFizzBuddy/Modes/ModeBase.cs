@@ -1,4 +1,5 @@
 ﻿using EloBuddy.SDK;
+using SharpDX;
 
 namespace JokerFizzBuddy.Modes
 {

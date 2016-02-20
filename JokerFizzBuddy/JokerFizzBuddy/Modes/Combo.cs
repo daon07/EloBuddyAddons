@@ -25,12 +25,12 @@ namespace JokerFizzBuddy.Modes
                         if (!target.IsFacing(Player.Instance))
                         {
                             if (Player.Instance.Distance(target.Position) < (R.Range - target.MoveSpeed) - (165))
-                                SpellManager.CastR(target);
+                                SpellManager.CastR(target, Settings.RMode);
                         }
                         else
                         {
                             if (Player.Instance.Distance(target.Position) <= (R.Range - 200))
-                                SpellManager.CastR(target);
+                                SpellManager.CastR(target, Settings.RMode);
                         }
                     }
                     if (Settings.UseHexTech || Settings.UseCutlassBOTRK)
@@ -52,7 +52,7 @@ namespace JokerFizzBuddy.Modes
                         if (Settings.UseQ && Q.IsReady() && Player.Instance.Distance(target.Position) <= Q.Range)
                         {
                             if (Settings.UseR && R.IsReady())
-                                SpellManager.CastR(target);
+                                SpellManager.CastR(target, Settings.RMode);
 
                             Q.Cast(target);
                         }
@@ -79,7 +79,7 @@ namespace JokerFizzBuddy.Modes
                             Core.DelayAction(() =>
                                 {
                                     if (UseR)
-                                        SpellManager.CastR(target);
+                                        SpellManager.CastR(target, Settings.RMode);
                                 }, (540 - Game.Ping));
                         }
 
@@ -102,11 +102,11 @@ namespace JokerFizzBuddy.Modes
                             {
                                 Core.DelayAction(() =>
                                     {
-                                        SpellManager.CastR(target);
+                                        SpellManager.CastR(target, Settings.RMode);
                                     }, (500 - Game.Ping));
                             }
                             else
-                                SpellManager.CastR(target);
+                                SpellManager.CastR(target, Settings.RMode);
                         }
 
                         if (UseW && Player.Instance.Distance(target.Position) <= 540) 
@@ -123,7 +123,7 @@ namespace JokerFizzBuddy.Modes
 
             var prediction = Prediction.Position.PredictUnitPosition(target, 1).Distance(Player.Instance.Position) <= (E.Range + 200 + 330);
 
-            if (E.Name == "FizzJump" && UseE && !W.IsReady() && !Q.IsReady() && !R.IsReady() && prediction)
+            if (E.Name == "FizzJump" && UseE && !W.IsReady() && !Q.IsReady() && prediction)
             {
 
                 var castPos = Player.Instance.Distance(Prediction.Position.PredictUnitPosition(target, 1)) > E.Range ?
@@ -133,7 +133,7 @@ namespace JokerFizzBuddy.Modes
                 E.Cast(castPos);
 
                 var pred2 = Prediction.Position.PredictUnitPosition(target, 1).Distance(Player.Instance.Position) <= (200 + 330 + target.BoundingRadius);
-				
+
                 if (pred2)
                     Player.IssueOrder(GameObjectOrder.MoveTo, Prediction.Position.PredictUnitPosition(target, 1).To3DWorld());
                 else
@@ -175,11 +175,11 @@ namespace JokerFizzBuddy.Modes
                          if (!target.IsFacing(Player.Instance))
                          {
                              if (Player.Instance.Distance(target.Position) < (R.Range - target.MoveSpeed) - (165))
-                                 SpellManager.CastR(target);
+                                 SpellManager.CastR(target, Settings.RMode);
                          }
                          else
                              if (Player.Instance.Distance(target.Position) <= R.Range)
-                                 SpellManager.CastR(target);
+                                 SpellManager.CastR(target, Settings.RMode);
                      }
 
                      if (W.IsReady() && !E.IsReady())
@@ -226,7 +226,7 @@ namespace JokerFizzBuddy.Modes
                      }
 
                      if (R.IsReady() && Settings.UseR && !FLASH.IsReady())
-                         SpellManager.CastR(target);
+                         SpellManager.CastR(target, Settings.RMode);
 
                      if (W.IsReady() && Settings.UseW && !FLASH.IsReady() && Player.Instance.LastCastedSpellName() == "FizzMarinerDoom")
                          W.Cast();
@@ -292,11 +292,11 @@ namespace JokerFizzBuddy.Modes
                                  if (!target.IsFacing(Player.Instance))
                                  {
                                      if (Player.Instance.Distance(target.Position) < (R.Range - target.MoveSpeed) - (165))
-                                         SpellManager.CastR(target);
+                                         SpellManager.CastR(target, Settings.RMode);
                                  }
                                  else
                                      if (Player.Instance.Distance(target.Position) <= R.Range)
-                                         SpellManager.CastR(target);
+                                         SpellManager.CastR(target, Settings.RMode);
 
                              }, (540 - Game.Ping));
                      }

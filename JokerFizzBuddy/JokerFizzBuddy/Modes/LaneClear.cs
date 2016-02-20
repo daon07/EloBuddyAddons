@@ -56,7 +56,7 @@ namespace JokerFizzBuddy.Modes
                     {
                         var predictMinion = castPos.GetCollisionObjects<Obj_AI_Minion>();
 
-                        if (predictMinion.Length >= 2)
+                        if (predictMinion.Length >= Settings.UseEMinion)
                         {
                             //var castPos = E.GetPrediction(target).CastPosition;
                             E.Cast(castPos.CastPosition);

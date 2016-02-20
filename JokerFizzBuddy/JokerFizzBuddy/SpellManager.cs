@@ -38,14 +38,25 @@ namespace JokerFizzBuddy
                 FLASH = new Spell.Skillshot(Player.Instance.GetSpellSlotFromName("summonerflash"), 425, SkillShotType.Linear);
         }
 
-        public static void CastR(Obj_AI_Base target)
+        public static void CastR(Obj_AI_Base target, string mode)
         {
             if (R.IsReady())
             {
                 Vector3 endPos = R.GetPrediction(target).CastPosition.Extend(Player.Instance.Position, -(600)).To3D();
 
-                if (!target.HasBuff("summonerbarrier") || !target.HasBuff("BlackShield") || !target.HasBuff("SivirShield") || !target.HasBuff("BansheesVeil") || !target.HasBuff("ShroudofDarkness"))
-                    R.Cast(endPos);
+                if(!target.HasBuff("summonerbarrier") || !target.HasBuff("BlackShield") || !target.HasBuff("SivirShield") || !target.HasBuff("BansheesVeil") || !target.HasBuff("ShroudofDarkness"))
+                {
+                    switch (mode)
+                    {
+                        case "Always":
+                            R.Cast(endPos);
+                            break;
+                        case "Only if killable":
+                            if (Modes.PermaActive.GetComboDamage(target) >= target.Health)
+                                R.Cast(endPos);
+                            break;
+                    }
+                }
             }
         }
 

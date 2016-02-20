@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.Remoting.Channels;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
@@ -12,6 +13,7 @@ using JokerFizzBuddy.Modes;
 
 using ComboSettings = JokerFizzBuddy.Config.Modes.Combo;
 using DrawSettings = JokerFizzBuddy.Config.Drawings;
+using MiscSettings = JokerFizzBuddy.Config.Misc;
 
 namespace JokerFizzBuddy
 {
@@ -22,6 +24,9 @@ namespace JokerFizzBuddy
         public static float RCooldownTimer = 0;
         public static bool CanCastZhonyaOnDash = false;
         public static Geometry.Polygon.Rectangle RRectangle;
+        public static Vector3 LastHarassPos { get; set; }
+        public static bool JumpBack { get; set; }
+        public static int SkinID = 0;
 
         private static void Main(string[] args)
         {
@@ -32,6 +37,8 @@ namespace JokerFizzBuddy
         {
             if (Player.Instance.ChampionName != ChampName)
                 return;
+
+            SkinID = Player.Instance.SkinId;
 
             Config.Initialize();
             ModeManager.Initialize();
@@ -46,7 +53,58 @@ namespace JokerFizzBuddy
             Player.SetSkinId(Config.Misc.SkinID);
             Drawing.OnDraw += OnDraw;
             Game.OnUpdate += OnUpdate;
+            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+            Obj_AI_Base.OnBasicAttack += OnBasicAttack;
 
+        }
+
+        static void OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender is Obj_AI_Turret && args.Target.IsMe && SpellManager.E.IsReady() && MiscSettings.UseAutoEOnTurrets)
+            {
+                var minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Ally).
+                    Where(m => m.IsValidTarget(SpellManager.E.Range * 2)).ToArray();
+                if (minions.Length != 0 && MiscSettings.UseAutoEOnTurretsMinions)
+                {
+                    var minionList = minions.OrderBy(m => m.Distance(Player.Instance.Position));
+
+                    var closestMinion = minionList.First();
+                    var furthestMinion = minionList.Last();
+
+                    SpellManager.E.Cast(Player.Instance.Position.Extend(closestMinion.Position, SpellManager.E.Range - 1).To3DWorld());
+                    Core.DelayAction(() =>
+                    {
+                        SpellManager.E.Cast(Player.Instance.Position.Extend(furthestMinion.Position, SpellManager.E.Range - 1).To3DWorld());
+                    }, (365 - Game.Ping));
+                }
+                else if (MiscSettings.UseAutoEOnTurretsCursor)
+                {
+                    SpellManager.E.Cast(Player.Instance.Position.Extend(Game.CursorPos, SpellManager.E.Range - 1).To3DWorld());
+                    Core.DelayAction(() =>
+                    {
+                        SpellManager.E.Cast(Player.Instance.Position.Extend(Game.CursorPos, SpellManager.E.Range - 1).To3DWorld());
+                    }, (365 - Game.Ping));
+                }
+            }
+        }
+
+        static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (!sender.IsMe)
+                return;
+
+
+            if (args.SData.Name == "FizzPiercingStrike" && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+                Core.DelayAction(() =>
+                    {
+                        JumpBack = true;
+                    }, (int)(sender.Spellbook.CastEndTime - Game.Time) + Game.Ping / 2 + 250);
+
+            if (args.SData.Name == "fizzjumptwo" || args.SData.Name == "fizzjumpbuffer")
+            {
+                LastHarassPos = Vector3.Zero;
+                JumpBack = false;
+            }
         }
 
         static void OnDraw(EventArgs args)

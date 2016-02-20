@@ -54,7 +54,7 @@ namespace JokerFizzBuddy.Modes
             }
         }
 
-        private static float GetComboDamage(AIHeroClient unit)
+        public static float GetComboDamage(Obj_AI_Base unit)
         {
             var d = 0f;
 

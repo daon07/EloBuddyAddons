@@ -21,6 +21,7 @@ namespace JokerFizzBuddy.Modes
 
             var mob = EntityManager.MinionsAndMonsters.Monsters.FirstOrDefault(m => m.IsValidTarget(Q.Range));
 
+            if (mob == null) return;
             if (Settings.UseQ && Q.IsReady() && mob.IsValidTarget(Q.Range))
             {
                 Q.Cast(mob);

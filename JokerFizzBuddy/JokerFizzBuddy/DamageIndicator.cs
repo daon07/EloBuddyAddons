@@ -26,10 +26,10 @@ namespace JokerFizzBuddy
         static DamageIndicator()
         {
             TextKillable = new Text("", new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold)) { Color = System.Drawing.Color.Red };
-            Drawing.OnDraw += Drawing_OnDraw;
+            Drawing.OnEndScene += Drawing_OnEndScene;
         }
 
-        static void Drawing_OnDraw(EventArgs args)
+        static void Drawing_OnEndScene(EventArgs args)
         {
             if (Settings.ShowKillable)
             {
@@ -39,7 +39,7 @@ namespace JokerFizzBuddy
                     var barPos = unit.HPBarPosition;
                     var damage = DamageToUnit(unit);
                     var percentHealthAfterDamage = ((unit.Health - damage) > 0 ? (unit.Health - damage) : 0) / unit.MaxHealth;
-                    
+
                     if (damage >= unit.Health)
                     {
                         TextKillable.Position = new Vector2((int)barPos.X - 12, (int)barPos.Y + yOffset + 20);
@@ -55,7 +55,7 @@ namespace JokerFizzBuddy
                     else
                     {
                         TextKillable.Position = new Vector2((int)barPos.X - 35, (int)barPos.Y + yOffset + 20);
-                        TextKillable.TextValue = "5 to 10 Shots - " + Math.Round(Convert.ToDecimal(percentHealthAfterDamage*100), 2) + "% HP Left!";
+                        TextKillable.TextValue = "5 to 10 Shots - " + Math.Round(Convert.ToDecimal(percentHealthAfterDamage * 100), 2) + "% HP Left!";
                         TextKillable.Color = System.Drawing.Color.Red;
                     }
 
